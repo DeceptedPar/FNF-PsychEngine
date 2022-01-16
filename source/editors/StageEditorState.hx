@@ -36,6 +36,7 @@ import flixel.system.debug.interaction.tools.Pointer.GraphicCursorCross;
 import lime.system.Clipboard;
 import flixel.animation.FlxAnimation;
 import flash.net.FileFilter;
+import flixel.util.FlxTimer;
 #if sys
 import sys.io.File;
 #end
@@ -47,6 +48,9 @@ using StringTools;
 
 class StageEditorState extends MusicBeatState
 {
+    var bf:Boyfriend;
+    var dad:Character;
+    var gf:Character;
     var layers:Array<String>;
     var directories:Array<String>;
     var defaultZoom:Float;
@@ -169,10 +173,17 @@ class StageEditorState extends MusicBeatState
     tipText.x -= tipText.width;
     tipText.y -= tipText.height - 10;
     add(tipText);
+    
+    bf = new Boyfriend(0, 0, 'bf');
+    dad = new Character(0, 0, 'dad');
+    gf = new Character(0, 0, 'gf');
 
     FlxG.mouse.visible = true;
 
     add(createdLayer);
+    add(gf);
+    add(dad);
+    add(bf);
 
     super.create();
 }
@@ -366,7 +377,11 @@ else{
     
    override public function update(elapsed:Float) {
 
-      super.update(elapsed);
+    super.update(elapsed);
+
+    /*gf.dance();
+    bf.dance();
+    dad.dance();*/
 
       searchForLayer();
       
@@ -388,16 +403,22 @@ else{
       var x = Std.parseInt(STRING[0].trim());
       var y = Std.parseInt(STRING[1].trim());
       swagStage.boyfriend = [x, y];
+      bf.x = x + bf.positionArray[0];
+      bf.y = y + bf.positionArray[1];
 
       var STRING2 = gfInputText.text.trim().split(", ");
       var x2 = Std.parseInt(STRING2[0].trim());
       var y2 = Std.parseInt(STRING2[1].trim());
       swagStage.girlfriend = [x2, y2];
+      gf.x = x2 + gf.positionArray[0];
+      gf.y = y2 + gf.positionArray[1];
 
       var STRING3 = opponentinputtext.text.trim().split(", ");
       var x3 = Std.parseInt(STRING3[0].trim());
       var y3 = Std.parseInt(STRING3[1].trim());
       swagStage.opponent = [x3, y3];
+      dad.x = x3 + dad.positionArray[0];
+      dad.y = y3 + dad.positionArray[1];
       }
       
       swagStage.defaultZoom = Std.parseFloat(zoominputtext.text);
